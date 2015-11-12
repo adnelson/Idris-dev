@@ -435,10 +435,7 @@ instance of ``Functor``:
     instance Applicative Eval where
         pure x = MkEval (\e => Just x)
 
-        (<*>) (MkEval f) (MkEval g) = MkEval (\x => app (f x) (g x)) where
-            app : Maybe (a -> b) -> Maybe a -> Maybe b
-            app (Just fx) (Just gx) = Just (fx gx)
-            app _         _         = Nothing
+        MkEval f <*> MkEval g = MkEval (\x => f x <*> g x)
 
 Evaluating an expression can now make use of the idiomatic application
 to handle errors:
